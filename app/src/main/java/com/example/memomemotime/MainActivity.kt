@@ -34,4 +34,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             
         }
     }
+
+    private fun requestLocationPermission() {
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // 許可を求め拒否されていた場合
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION)
+
+        } else {
+//            ActivityCompat.
+        }
+    }
 }
