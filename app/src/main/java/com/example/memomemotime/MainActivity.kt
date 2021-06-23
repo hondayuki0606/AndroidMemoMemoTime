@@ -2,9 +2,12 @@ package com.example.memomemotime
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+//import androidx.appcompat.app.ActivityCompat
 import android.os.Bundle
+import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -24,14 +27,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap){
         mMap = googleMap
 
+        checkPermission()
     }
     
     private fun checkPermission() {
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION))
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED){
-                
+            myLocationEnable()
         } else {
-            
+            requestLocationPermission()
         }
     }
 
@@ -41,7 +45,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION)
 
         } else {
-//            ActivityCompat.
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION)
         }
     }
 
@@ -49,20 +53,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onRequestPermissionResult(requestCode, permissions, grantResults)
         when(requestCode){
             MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION->{
-                if (permission.isNotEmpty())
+                if (Manifest.permission.isNotEmpty()&&grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    showToast("現在値値は表示できません")
+                }
             }
         }
     }
 
     private fun myLocationEnable(){
-        if (ActivityCompat.checkSelfPermission(this. Manifest.permission.ACCESS_FINE_LOCATION)==PackagerManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackagerManager.PERMISSION_GRANTED){
             mMap.isMyLocationEnabled = true
         }
     }
 
     private fun showToast(msg: String) {
-        val toast = Toast.makeText(this.msg,Toast.LENGTH_LONG)
+        val toast = Toast.makeText(this,msg,Toast.LENGTH_LONG)
         toast.show()
     }
-
 }
