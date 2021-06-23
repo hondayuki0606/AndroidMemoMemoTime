@@ -44,4 +44,25 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 //            ActivityCompat.
         }
     }
+
+    override fun onRequestPermissionResult(requestCode: Int, permissions:Array<out String>, grantResults: intArray){
+        super.onRequestPermissionResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION->{
+                if (permission.isNotEmpty())
+            }
+        }
+    }
+
+    private fun myLocationEnable(){
+        if (ActivityCompat.checkSelfPermission(this. Manifest.permission.ACCESS_FINE_LOCATION)==PackagerManager.PERMISSION_GRANTED){
+            mMap.isMyLocationEnabled = true
+        }
+    }
+
+    private fun showToast(msg: String) {
+        val toast = Toast.makeText(this.msg,Toast.LENGTH_LONG)
+        toast.show()
+    }
+
 }
