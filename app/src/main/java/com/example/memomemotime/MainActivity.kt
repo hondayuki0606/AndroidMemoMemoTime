@@ -21,7 +21,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_main)
         // 画面をスリープにしない
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        val mapFragment = supportFragmentManager.findDragmentById(this)
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map)
+        mapFragment.getMapAsync(this)
     }
     
     override fun onMapReady(googleMap: GoogleMap){
@@ -49,12 +50,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onRequestPermissionResult(requestCode: Int, permissions:Array<out String>, grantResults: intArray){
-        super.onRequestPermissionResult(requestCode, permissions, grantResults)
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
             MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION->{
-                if (Manifest.permission.isNotEmpty()&&grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (permissions.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
+                    myLocationEnable()
                 } else {
                     showToast("現在値値は表示できません")
                 }
