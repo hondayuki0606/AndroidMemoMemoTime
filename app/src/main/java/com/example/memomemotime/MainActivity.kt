@@ -9,12 +9,12 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
@@ -74,11 +74,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun myLocationEnable(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackagerManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
             mMap.isMyLocationEnabled = true
-            val locationResult = LocationRequest().apply {
+            val locationRequest = LocationRequest().apply {
                 interval = 10000
-                fastesInterval 5000
+                fastestInterval = 5000
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             }
             locationCallback = object: LocationCallback() {
@@ -86,12 +86,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                     if(locationResult?.lastLocation != null) {
                         lastLocation = locationResult?.lastLocation
                         val currentLatLng = LatLng(lastLocation.latitude,lastLocation.longitude)
-                        mMap.moceCamera(CameraUpdateFactory.newLatLng(currentLatLng))
-                        textView
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng))
+                        textView.text = "Lat:${lastLocation.latitude}, Lng:${lastLocation.longitude}"
                         
                     }
                 }
             }
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback)
         }
     }
 
